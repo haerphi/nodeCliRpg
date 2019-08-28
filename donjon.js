@@ -4,7 +4,7 @@ class Donjon {
     constructor(lvl, bossName) {
         this.level = lvl;
         this.rooms = [];
-        this.boss = new Mob("boss", bossName, lvl);
+        this.boss = new Mob("boss", bossName, lvl, 20);
         this.heroRoom = 0;
         this.init();
     }
@@ -35,19 +35,37 @@ class Donjon {
             // Remet la sortie au bon endroit (pour revenir en arrière)
             let ways = [-1, -1, -1, -1];
             ways[comingDoor] = i - 1;
-            // (pour avancer) A REFAIRE
-            let randomWay = Math.round(Math.random() * (3 - 0) + 0);
+            // (pour avancer)
+            let randomWay = 0;
+            do {
+                randomWay = Math.round(Math.random() * (3 - 0) + 0);
+            } while (ways[randomWay] != -1);
             ways[randomWay] = i + 1;
-            let status = "trapped";
-            ways.forEach(el => {
-                if (el === i - 1) {
-                    status = "basic";
-                    return null;
-                }
-            });
-
-            this.rooms.push(new Room(status, ways, null, []));
+            let status = "basic";
+            this.rooms.push(new Room(status, ways, new Mob("zombie", "Gorge", 1, 2), [0]));
         }
+        //last room (Boss)
+        let comingDoor = this.rooms[this.rooms.length - 1].ways;
+        for (let h = 0; h < comingDoor.length; h++) {
+            if (h === 0) {
+                comingDoor = 1;
+                break;
+            } else if (h === 1) {
+                comingDoor = 0;
+                break;
+            } else if (h === 2) {
+                comingDoor = 3;
+                break;
+            } else if (h === 3) {
+                comingDoor = 2;
+                break;
+            }
+        }
+        // Remet la sortie au bon endroit (pour revenir en arrière)
+        let ways = [-1, -1, -1, -1];
+        ways[comingDoor] = this.rooms.length - 1;
+        this.rooms.push(new Room("Boss Room", ways, this.boss, [0]));
+
     }
 
     getActuelRoomStatus() {
@@ -84,6 +102,17 @@ class Donjon {
         } else if (choice === "b") {
             this.heroRoom = this.rooms[this.heroRoom].ways[3];
         }
+    }
+
+    getRoomInfo() {
+        return this.rooms[this.heroRoom].info;
+    }
+
+    lootTheRoom() {
+        this.rooms[this.heroRoom].mob = null;
+        let loot = this.rooms[this.heroRoom].loot
+        this.rooms[this.heroRoom].loot = []
+        return loot;
     }
 
     bossAlive() {

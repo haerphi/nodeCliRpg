@@ -1,11 +1,12 @@
 const Healt = require('./healt.js');
 
 class Mob extends Healt {
-    constructor(type, nickname, lvl) {
-        super(10 * (lvl / 2));
+    constructor(type, nickname, lvl, dmg) {
+        super(10 * lvl);
         this.nickname = nickname;
         this.type = type;
         this.lvl = lvl;
+        this.dmg = dmg
     }
     get name() {
         return this.nickname;

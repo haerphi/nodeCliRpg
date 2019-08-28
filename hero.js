@@ -2,7 +2,7 @@ const Heatl = require('./healt.js');
 
 class Hero extends Heatl {
     constructor(nickname) {
-        super(100);
+        super(100, 5);
         this.nickname = nickname;
         this.exp = 0;
         this.lvl = 1;

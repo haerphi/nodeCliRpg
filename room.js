@@ -8,6 +8,9 @@ class Room {
     get ways() {
         return this.way;
     }
+    get info() {
+        return [this.type, this.mob, this.loot];
+    }
 }
 
 module.exports = Room
