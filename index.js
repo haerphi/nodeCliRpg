@@ -20,9 +20,7 @@ console.log(boxen(figlet.textSync('Dongeon me', {
 
 /* instiation */
 let hero = new Hero(readlineSync.question('May I have your name hero ? '));
-let dj = new Donjon(1);
-
-
+let dj = new Donjon(1); // 1 = le niveau du donjon
 
 console.log("Route donjon : ");
 dj.rooms.forEach(el => {
